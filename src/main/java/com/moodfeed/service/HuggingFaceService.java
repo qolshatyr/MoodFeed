@@ -16,7 +16,6 @@ import java.util.List;
 @Slf4j
 @Service
 @ConditionalOnProperty(name = "app.ai.enabled", havingValue = "true")
-@RequiredArgsConstructor
 public class HuggingFaceService implements SentimentAnalysisService {
 
     @Value("${app.ai.token}")
@@ -42,7 +41,7 @@ public class HuggingFaceService implements SentimentAnalysisService {
         if (text == null || text.isBlank()) return Sentiment.NEUTRAL;
 
         try {
-            log.error("Analyzing text {}", text);
+            log.info("Analyzing text {}", text);
             List<List<HfResponse>> response = client.post()
                     .body(java.util.Map.of("inputs", text))
                     .retrieve()
