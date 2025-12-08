@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -16,7 +15,6 @@ import java.util.List;
 
 @Slf4j
 @Service
-@Primary
 @ConditionalOnProperty(name = "app.ai.enabled", havingValue = "true")
 @RequiredArgsConstructor
 public class HuggingFaceService implements SentimentAnalysisService {
@@ -44,6 +42,7 @@ public class HuggingFaceService implements SentimentAnalysisService {
         if (text == null || text.isBlank()) return Sentiment.NEUTRAL;
 
         try {
+            log.error("Analyzing text {}", text);
             List<List<HfResponse>> response = client.post()
                     .body(java.util.Map.of("inputs", text))
                     .retrieve()
